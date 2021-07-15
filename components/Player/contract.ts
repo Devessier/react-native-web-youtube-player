@@ -12,4 +12,5 @@ export type PlayerComponent = React.ForwardRefExoticComponent<
 >;
 
 export interface PlayerRef {
+  getDuration(): Promise<number>
 }

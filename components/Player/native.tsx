@@ -9,7 +9,16 @@ const NativePlayer: PlayerComponent = forwardRef<PlayerRef, PlayerProps>(
   ({ width, height, videoId, playing }, ref) => {
     const playerRef = useRef<YoutubeIframeRef>(null);
 
-    useImperativeHandle(ref, () => ({}));
+    useImperativeHandle(ref, () => ({
+      async getDuration() {
+        const duration = await playerRef.current?.getDuration()
+        if (duration === undefined) {
+          throw new Error('Could not get duration from react-native-youtube-iframe')
+        }
+
+        return duration
+      },
+    }));
 
     return (
       <YoutubePlayer

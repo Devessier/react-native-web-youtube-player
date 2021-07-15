@@ -11,7 +11,16 @@ const WebPlayer: PlayerComponent = forwardRef<PlayerRef, PlayerProps>(
   ({ width, height, videoId, playing }, ref) => {
     const playerRef = useRef<YoutubeIframePlayer>();
 
-    useImperativeHandle(ref, () => ({}));
+    useImperativeHandle(ref, () => ({
+      getDuration() {
+        const duration = playerRef.current?.getDuration()
+        if (duration === undefined) {
+          throw new Error('Could not get duration from react-youtube')
+        }
+
+        return Promise.resolve(duration);
+      }
+    }));
 
     useEffect(() => {
       if (playing === true) {

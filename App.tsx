@@ -9,6 +9,17 @@ import { PlayerRef } from "./components/Player/contract";
 export default function App() {
   const playerRef = useRef<PlayerRef>(null)
   const [playerPlaying, setPlayerPlaying] = useState(false)
+  const [duration, setDuration] = useState(0)
+
+  async function handleComputeDuration() {
+    const player = playerRef.current
+    if (player === null) {
+      return
+    }
+    const duration = await player.getDuration()
+
+    setDuration(duration)
+  }
   
   return (
     <View style={styles.container}>
@@ -19,6 +30,12 @@ export default function App() {
       <Button title="Press me to play" onPress={() => {
         setPlayerPlaying(!playerPlaying)
       }} />
+
+      <Text>
+        Duration of the current track: {duration} seconds
+      </Text>
+
+      <Button title="Compute duration of the current track" onPress={handleComputeDuration} />
 
       <StatusBar style="auto" />
     </View>
