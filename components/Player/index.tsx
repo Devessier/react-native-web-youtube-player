@@ -1,6 +1,9 @@
 import { Platform } from "react-native";
+import { PlayerComponent } from "./contract";
 
-export default Platform.select({
+const PlayerWrapper: PlayerComponent = Platform.select({
   native: () => require('./native').default,
   default: () => require('./web').default,
 })()
+
+export default PlayerWrapper

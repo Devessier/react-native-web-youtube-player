@@ -1,26 +1,38 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { useRef } from "react";
+import { useImperativeHandle } from "react";
+import { forwardRef } from "react";
 import YouTube, { Options } from "react-youtube";
+import { PlayerComponent, PlayerProps, PlayerRef } from "./contract";
+import { YoutubeIframePlayer } from "./youtube-iframe";
 
-export default function WebPlayer() {
-  const opts: Options = {
-    height: "390",
-    width: "640",
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
-    },
-  };
+const WebPlayer: PlayerComponent = forwardRef<PlayerRef, PlayerProps>(
+  ({ width, height, videoId }, ref) => {
+    const playerRef = useRef<YoutubeIframePlayer>()
 
-  function onReady(event: { target: any }) {
-    console.log("ready", event);
+    useImperativeHandle(ref, () => ({
+      pause() {
+        playerRef.current?.pauseVideo()
+      },
+
+      play() {
+        playerRef.current?.playVideo()
+      }
+    }))
+
+    const playerOptions: Options = {
+      height: String(height),
+      width: String(width),
+    }
+
+    function setPlayerRef(ref: YouTube) {
+      playerRef.current = ref.getInternalPlayer() as YoutubeIframePlayer
+    }
+
+    return (
+      <YouTube ref={setPlayerRef} videoId={videoId} opts={playerOptions} />
+    )
   }
+);
 
-  return (
-    <View>
-      <Text>Salut for Web</Text>
-
-      <YouTube videoId="2g811Eo7K8U" opts={opts} onReady={onReady} />
-    </View>
-  );
-}
+export default WebPlayer;
