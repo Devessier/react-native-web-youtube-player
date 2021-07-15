@@ -1,10 +1,29 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { useRef } from "react";
+import { useImperativeHandle } from "react";
+import { forwardRef } from "react";
+import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
+import { PlayerComponent, PlayerProps, PlayerRef } from "./contract";
 
-export default function NativePlayer() {
-  return (
-    <View>
-      <Text>Salut for native</Text>
-    </View>
-  );
-}
+const NativePlayer: PlayerComponent = forwardRef<PlayerRef, PlayerProps>(
+  ({ width, height, videoId }, ref) => {
+    const playerRef = useRef<YoutubeIframeRef>(null);
+
+    useImperativeHandle(ref, () => ({
+      pause() {},
+
+      play() {},
+    }));
+
+    return (
+      <YoutubePlayer
+        ref={playerRef}
+        videoId={videoId}
+        height={height}
+        width={width}
+      />
+    );
+  }
+);
+
+export default NativePlayer;
