@@ -1,8 +1,9 @@
-import React from "react";
-import { useRef } from "react";
-import { useImperativeHandle } from "react";
-import { useEffect } from "react";
-import { forwardRef } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useImperativeHandle,
+  forwardRef,
+} from "react";
 import YouTube, { Options } from "react-youtube";
 import { PlayerComponent, PlayerProps, PlayerRef } from "./contract";
 import { YoutubeIframePlayer } from "./youtube-iframe";
@@ -13,13 +14,13 @@ const WebPlayer: PlayerComponent = forwardRef<PlayerRef, PlayerProps>(
 
     useImperativeHandle(ref, () => ({
       getDuration() {
-        const duration = playerRef.current?.getDuration()
+        const duration = playerRef.current?.getDuration();
         if (duration === undefined) {
-          throw new Error('Could not get duration from react-youtube')
+          throw new Error("Could not get duration from react-youtube");
         }
 
         return Promise.resolve(duration);
-      }
+      },
     }));
 
     useEffect(() => {

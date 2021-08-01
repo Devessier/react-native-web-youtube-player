@@ -1,7 +1,4 @@
-import React from "react";
-import { useRef } from "react";
-import { useImperativeHandle } from "react";
-import { forwardRef } from "react";
+import React, { useRef, useImperativeHandle, forwardRef } from "react";
 import YoutubePlayer, { YoutubeIframeRef } from "react-native-youtube-iframe";
 import { PlayerComponent, PlayerProps, PlayerRef } from "./contract";
 
@@ -11,12 +8,14 @@ const NativePlayer: PlayerComponent = forwardRef<PlayerRef, PlayerProps>(
 
     useImperativeHandle(ref, () => ({
       async getDuration() {
-        const duration = await playerRef.current?.getDuration()
+        const duration = await playerRef.current?.getDuration();
         if (duration === undefined) {
-          throw new Error('Could not get duration from react-native-youtube-iframe')
+          throw new Error(
+            "Could not get duration from react-native-youtube-iframe"
+          );
         }
 
-        return duration
+        return duration;
       },
     }));
 
