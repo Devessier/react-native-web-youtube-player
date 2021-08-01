@@ -32,7 +32,7 @@ export default function App() {
       />
 
       <Button
-        title="Press me to play"
+        title={`Press me to ${playerPlaying ? 'pause' : 'play'}`}
         onPress={() => {
           setPlayerPlaying(!playerPlaying);
         }}
